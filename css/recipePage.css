@@ -164,6 +164,10 @@
   cursor:pointer;
 }
 
+.checklist li label span {
+  max-width: 80%;
+}
+
 .checklist--ingredients li label{
   background: var(--bgBlue);
 
