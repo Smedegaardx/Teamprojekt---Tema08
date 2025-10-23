@@ -6,75 +6,80 @@ const id = params.get("id");
 
 fetch(`https://dummyjson.com/recipes/${id}`)
   .then((response) => response.json())
-  .then((data) => showHero(data))
+  .then((data) => {
+    showHero(data);
+    return data;
+  })
   .then((data) => showSteps(data));
 
-function showHero() {
+function showHero(recipe) {
   recipeHero.innerHTML = `<div class="recipe_text">
           <p class="recipe_path">RataTUI &gt; Recipes</p>
-          <h1 class="recipe_title">Fish Filet</h1>
+          <h1 class="recipe_title">${recipe.name}</h1>
 
           <div class="recipe_rating">
             <span class="star">★</span>
-            <span class="rating_value">4.6</span>
+            <span class="rating_value">${recipe.rating}</span>
             <span class="divider">|</span>
-            <span class="reviews">47 reviews</span>
+            <span class="reviews">${recipe.reviewCount} reviews</span>
           </div>
 
           <div class="recipe_info">
             <div class="info_card blue">
-              <p><strong>Difficulty:</strong> Easy</p>
+              <p><strong>Difficulty:</strong> ${recipe.difficulty}</p>
               <p><br /></p>
-              <p><strong>Cuisine:</strong> Italian</p>
+              <p><strong>Cuisine:</strong> ${recipe.cuisine}</p>
               <p><br /></p>
-              <p><strong>Meal type:</strong> Dinner</p>
+              <p><strong>Meal type:</strong> ${recipe.mealType}</p>
               <p><br /></p>
-              <p><strong>Calories per serving:</strong> 1255 kJ / 300 KCAL</p>
+              <p><strong>Calories per serving:</strong> ${Math.round(recipe.caloriesPerServing * 4.184)} kJ / ${recipe.caloriesPerServing} KCAL</p>
             </div>
 
             <div class="info_card grey">
               <div class="time_icon">🕒</div>
-              <p><strong>Prep</strong><br />15 min</p>
-              <p><strong>Cook</strong><br />20 min</p>
-              <p><strong>Total</strong><br />35 min</p>
+              <p><strong>Prep</strong><br />${recipe.prepTimeMinutes} min</p>
+              <p><strong>Cook</strong><br />${recipe.cookTimeMinutes} min</p>
+              <p><strong>Total</strong><br />${recipe.cookTimeMinutes + recipe.prepTimeMinutes} min</p>
             </div>
           </div>
         </div>
 
         <div class="recipe_image">
-          <img src="content/img/placeholder_food.png" alt="Fish Filet" />
-        </div>`;
+          <img src="${recipe.image}" alt="${recipe.name}" />
+        </div>
+        `;
 }
 
-function showSteps() {
-  recipeSteps.innerHTML = `<!-- INGREDIENTS -->
+function showSteps(recipe) {
+  recipeSteps.innerHTML = `
+        <!-- INGREDIENTS -->
         <div class="steps_col steps_left">
           <h2>Ingredients</h2>
-          <p class="sub">For 4 people</p>
+          <p class="sub">For ${recipe.servings} people</p>
           <p class="hint">(Check the boxes as you go)</p>
 
           <ul class="checklist checklist--ingredients">
-            <li>
+          <li>
               <label>
-                <span>Raw fish (1)</span>
+                <span>${recipe.ingredients[0]}</span>
                 <input type="checkbox" checked />
               </label>
             </li>
             <li>
               <label>
-                <span>Lemons (4)</span>
+                <span>${recipe.ingredients[1]}</span>
                 <input type="checkbox" />
               </label>
             </li>
             <li>
               <label>
-                <span>Butter (20 g)</span>
+                <span>${recipe.ingredients[2]}</span>
                 <input type="checkbox" />
               </label>
             </li>
             <li>
               <label>
-                <span>Salt &amp; pepper</span>
+                <span>${recipe.ingredients[3]}</span>
                 <input type="checkbox" />
               </label>
             </li>
@@ -89,25 +94,25 @@ function showSteps() {
           <ul class="checklist checklist--instructions">
             <li>
               <label>
-                <span>Boil water (1 min)</span>
+                <span>${recipe.instructions[0]}</span>
                 <input type="checkbox" />
               </label>
             </li>
             <li>
               <label>
-                <span>Fry the fish gently (5 min)</span>
+                <span>${recipe.instructions[1]}</span>
                 <input type="checkbox" />
               </label>
             </li>
             <li>
               <label>
-                <span>Stir (30 sec)</span>
+                <span>${recipe.instructions[2]}</span>
                 <input type="checkbox" />
               </label>
             </li>
             <li>
               <label>
-                <span>Serve</span>
+                <span>${recipe.instructions[3]}</span>
                 <input type="checkbox" />
               </label>
             </li>
