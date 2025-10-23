@@ -32,3 +32,55 @@
     --bgBlue: #E3F5FD;
     --bgGreen: #C4E3CC;
 }
+
+
+/* Header styles */
+    header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 40px;
+    border-bottom: 1px solid var(--bgWhite);
+
+    font-family: 'AmbitSemiBold';
+
+    margin-left: 250px;
+    margin-right: 250px;
+  }
+  .header_left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header_left img {
+    height: 70px;
+  }
+  .header_right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .header_right a {
+    color: var(--textBlue);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .header_divider {
+    width: 1px;
+    height: 20px;
+    background: grey;
+  }
+  .header_user-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--textBlue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header_user-icon::before {
+    content: "👤";
+    color: var(--bgWhite);;
+    font-size: 16px;
+  }
