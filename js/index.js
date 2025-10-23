@@ -10,7 +10,17 @@ async function getData() {
     try {
         const response = await fetch(`https://dummyjson.com/recipes`)
         const data = await response.json()
-        allRecipes = data.recipes || []
+
+        // if API reports a total, request all items in one call
+        if (data.total && data.total > (data.recipes?.length || 0)) {
+            const allResp = await fetch(`https://dummyjson.com/recipes?limit=${data.total}`)
+            const allData = await allResp.json()
+            allRecipes = allData.recipes || []
+        } else {
+            allRecipes = data.recipes || []
+        }
+
+        console.log('fetched', allRecipes.length, 'of', data.total ?? 'unknown')
         renderRecipes(allRecipes)
     } catch (err) {
         console.error(err)
