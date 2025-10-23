@@ -1,10 +1,12 @@
 .recipe_hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(420px, 1fr) minmax(520px, 1fr); /* text | image */
   align-items: start;
   gap: 40px;
   padding: 60px 250px;
   font-family: 'AmbitSemiBold', sans-serif;
+
+  overflow: hidden;
 }
 
 .recipe_text {
