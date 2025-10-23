@@ -98,7 +98,6 @@
     margin-left: 0; margin-right: 0;   /* override large desktop margins */
     gap: 8px;
   }
-
   /* show hamburger */
   .header_menu{
     display:inline-flex;
@@ -112,14 +111,11 @@
   .header_menu span{
     display:block; width:28px; height:3px; background: var(--textBlue);
   }
-
   /* center logo */
   .header_left{ justify-self:center; }
   .header_left img{ height: 70px; }
-
   /* hide desktop links */
   .header_right{ display:none; }
-
   /* show mobile account (icon + label stacked) */
   .header_account{
     display:flex;
@@ -152,4 +148,68 @@
     border:3px solid var(--textBlue); border-top:none;
     border-radius:0 0 28px 28px;
   }
+}
+
+/* Footer styles */
+footer{
+  background: var(--ctaRed);
+  color: var(--bgWhite);
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-left: 250px;
+  margin-right: 250px;
+  border-top: 1px solid rgba(255,255,255,.15);
+  font-family: 'AmbitSemiBold', system-ui, Arial, sans-serif;
+}
+/* left: brand + links */
+.footer_brand{
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.footer_brand img{ height:56px; }
+.brand_text{ line-height:1.05; letter-spacing:.3px; }
+.brand_text .dot{ margin-right:6px; font-weight:700; }
+.footer_links{
+  display:flex; flex-direction:column; gap:10px;
+}
+.footer_links a{
+  color: var(--offWhite);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* right: socials + meta */
+.footer_right{
+  display:flex; flex-direction:column; gap:16px; align-items:flex-end;
+  text-align:right;
+}
+.footer_social{
+  display:flex; gap:14px;
+}
+.footer_social a{
+  width:42px; height:42px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  color: var(--brandRed);
+  text-decoration:none;
+}
+.footer_url{
+  color: var(--bgWhite);
+  text-decoration:none;
+}
+.footer_meta p{
+  margin:6px 0 0;
+  color: var(--bgWhite);
+}
+.footer_links a:hover,
+.footer_url:hover{ opacity:.9; }
+.footer_social a:hover{ filter: brightness(.95); }
+/* mobile */
+@media (max-width: 768px){
+  footer{
+    text-align:left;
+    margin-left: 0; margin-right: 0;
+    padding: 28px 20px;
+  }
+  .footer_right{ align-items:flex-start; text-align:left; }
 }
