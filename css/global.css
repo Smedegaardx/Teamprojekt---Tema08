@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     
-    color: var(--textBlue);
     font-family: 'Ambit', sans-serif;
 }
 
@@ -178,7 +177,7 @@ footer{
   display:flex; flex-direction:column; gap:10px;
 }
 .footer_links a{
-  color: var(--offWhite);
+  color: var(--bgWhite);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
