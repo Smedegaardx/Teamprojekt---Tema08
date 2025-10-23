@@ -1,16 +1,56 @@
 const container = document.querySelector('#recipeContainer')
+const form = document.querySelector('#searchFilter form')
 
 const queryString = new URLSearchParams(window.location.search);
 const id = queryString.get("id")
 
-async function getData() {
-    const response = await fetch(`https://dummyjson.com/recipes`)
-        .then((res) => res.json())
+let allRecipes = []
 
-    //console.log(response.recipes[0])
-    container.append(buildCards(response.recipes))
-    
+async function getData() {
+    try {
+        const response = await fetch(`https://dummyjson.com/recipes`)
+        const data = await response.json()
+        allRecipes = data.recipes || []
+        renderRecipes(allRecipes)
+    } catch (err) {
+        console.error(err)
+    }
 }
+
+function renderRecipes(recipes) {
+    container.innerHTML = ''            // clear previous results
+    container.append(buildCards(recipes))
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const cuisine = form.elements['cuisine']?.value || 'all'
+    const mealType = form.elements['mealType']?.value || 'all'
+    const difficulty = form.elements['difficulty']?.value || 'all'
+    const rating = form.elements['rating']?.value || 'all'
+
+    const filtered = allRecipes.filter(r => {
+        // helper: check value against array/field (case-insensitive)
+        const matches = (field, val) => {
+            if (val === 'all') return true
+            if (!field) return false
+            if (Array.isArray(field)) return field.map(x => String(x).toLowerCase()).includes(val.toLowerCase())
+            return String(field).toLowerCase().includes(val.toLowerCase())
+        }
+
+        // adapt to how your recipe data is structured:
+        // try tags first, then possible fields like cuisine / mealType / difficulty
+        if (!matches(r.tags, cuisine) && !matches(r.cuisine, cuisine)) return false
+        if (!matches(r.tags, mealType) && !matches(r.mealType, mealType) && !matches(r.dishType, mealType)) return false
+        if (difficulty !== 'all' && !matches(r.difficulty, difficulty)) return false
+        if (rating !== 'all' && Number(r.rating) < Number(rating)) return false
+
+        return true
+    })
+
+    renderRecipes(filtered)
+})
 
 function buildCards(recipes) {
     
@@ -42,7 +82,7 @@ function buildCards(recipes) {
                         <div class="recipeHeader">
                             <h3>${element.name}</h3>
                             <span class="fa fa-star checked"></span>
-                            <p>4.6</p>
+                            <p>${element.rating}</p>
                         </div>
 
                         <p>
@@ -59,7 +99,6 @@ function buildCards(recipes) {
     })
 
     cardsContainer.innerHTML = markup
-    //console.log(markup)
     return cardsContainer
 }
 
