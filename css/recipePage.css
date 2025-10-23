@@ -137,8 +137,8 @@
   color: var(--textBlue);
   margin: 0 0 6px;
 }
-.sub{ margin:0 0 16px; color:#6e6e8f; }
-.hint{ margin:0 0 8px; color:#8a90a5; font-size:12px; }
+.sub{ margin:0 0 16px; color:#6e6e8f; font-size: 20px; color: var(--textBlue);}
+.hint{ margin:0 0 8px; color:#8a90a5; font-size:15px; }
 
 /* right side panel bg */
 .steps_right{
