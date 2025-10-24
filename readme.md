@@ -5,13 +5,7 @@ Henvis med link til jeres README.md i dokumentationsrapporten:
 
 ## Projektstruktur:
 
-Beslut, hvordan I vil organisere jeres projekt – struktur for mapper og filer.
-
-- Hvordan organiserer I billeder, fonte og andre ressourcer?
-- Hvor placerer I boilerplate?(fx CSS- og JavaScript-filer, der bruges på tværs af projektet)
-- Hvor placerer I HTML, CSS- og JavaScript-filer til fx detaljevisning og listevisning?
-
-Vi har lavet mapper til alt hvad der ikke er .html og .md filer - så vi har filer til javascript, css og en overordnet mappe til alt andet (content) med undermapper til specifikke ting f.eks til fonter 
+Vi har lavet mapper til alt hvad der ikke er .html og .md filer - så vi har filer til javascript, css og en overordnet mappe til alt andet (content) med undermapper til specifikke ting f.eks til fonter
 
 Vi har lavet en "global" css fil boilerplate kode, og bliver det nødvendigt gør vi det samme for js
 
@@ -25,29 +19,25 @@ Vi køre camelCase til vores filnavne. Alle filer der høre sammen har samme nav
 
 ## Git branches:
 
-- Hvordan navngiver I branches, så alle kan forstår hvem der arbejder i branchen og på hvad?(fx feature-lotte-formular)
+- Vi har navngivet vores branches "navn + arbejdsopgave" - f.eks "rasmusHeaderFooder" - så vi ved hvem branchen "tilhøre" og hvilken arbejdsopgave der bliver lavet
 
 ## Arbejdsflow:
 
-- Hvordan fordeler I arbejdet, så I undgår at flere arbejder i de samme filer samtidigt?
-- Hvordan sikrer I, at commit-beskeder er beskrivende?
-- Hvordan kommunikerer i om ændringer i main branchen når feature merges?
+- Vi har verbalt og skriftligt kommunikeret om hvem der tog vilke arbejdsopgaver. Vi har samarbejdet om Merges så vi er sikre på at vi ikke mistede noget vigtigt kode
 
 ## Kode:
 
-- Hvordan skriver i funktioner i JavaScript?(fx med function keyword eller som arrow functions)
-- Beslut hvilken CSS selector i benyttes til referener i henholdsvis CSS og JavaScript(fx. id'er til JavaScript og Classes til CSS)
-- Skal filer have korte forklaringer som kommentarer?
+- Vi har ikke haft tid til at have hel enighed i hvordan funktionerne blir skrevet og navngivet - lidt op til individuel preferencer. Vi har som udgangspunkt brugt arrow functions
+
+- Vi har brugt både ID'er og classes til CSS, men har som udgangspunkt brugt ID'er gennem js når vi skulle query selecte
 
 # Funktionalitet
 
-Dette afsnit skal forklare hvad I konkret har arbejde med, for at udvikle websitet. Tænk over hvilke interaktioner brugeren kan foretage på sitet? Eller hvordan websitet håndterer og præsenterer data? Eksempler på funktionalitet, der kan beskrives:
+Vi henter opskrifter ned fra API'et og præsentere dem dynamisk gennem cards. Cards'ne bliver lavet i js og bliver så appended til documentet når det er færdig-genereret
 
-- Hentning af produkter fra API.
-- Filtrering af produkter baseret på brugerens valg.
-- Dynamisk visning af produkter i HTML.
+Vi har filtrereting på opskrifterne - vi filtrere på 4 forskellige parametre alt efter behov, specifikt hvad for nogle tags opskriften har, hvilket "køkken" det kommer fra, om det er morgen/middag/aftensmad eller dessert, og hvor svær opskriften er at lave
 
-Brug korte beskrivelser, som i eksemplerne herover
+Hver card leder til en underside som er baseret på en opskrifts id. Hver opskrift har en række "steps" og nogle forskellige ingredientser, som vi dynamisk henter ind og som brugeren kan krydse af når de har klaret
 
 # API endpoints
 
@@ -55,22 +45,67 @@ Dette afsnit skal liste de endpoints fra API'et i har benyttet:
 
 - (fx. https://dummyjson.com/products)
 
+https://dummyjson.com/recipe?limit={limit}
 https://dummyjson.com/recipes
+
+https://dummyjson.com/recipes/{id}
 
 # Dokumentation af Funktion
 
-Dette afsnit skal beskrive en funktion I selv har udviklet. Det kunne eksempelvis være en funktion der generere en listen over fx. produkter:
-
-- Beskrivelse: Hvad gør funktionen? Hvordan spiller den sammen med resten af koden?
-- Parametre: Hvilke input forventes (fx en værdi fra en dropdown eller URL'en)?
-- Returnerer: Beskriv, om funktionen returnerer en værdi eller blot manipulerer DOM’en.
-- Eksempel på brug: Indsæt funktions-koden herunder(der hvor koden er i eksemplet) og vis, hvordan funktionen kaldes:
+- Beskrivelse: Laver dynamisk cards baseret på hver opskrift fra "recipe" API'et.
+- Parametre: Forventer et array af opskrifter i JSON format
+- Retunere: Et DOM element der bliver lavet i funktionen, hvor der er blevet generet HTML som kan appendes
+- Brugseksempel: Bruges ved at man laver {elementName}.appendChild(buildCards(recipes))
 
 ```javascript
-//funktionens kode:
-function voresFunktion(sprog) {
-  console.log(`${sprog} syntax highlighting`);
+function buildCards(recipes) {
+  const cardsContainer = document.createElement("section");
+  cardsContainer.id = "recipeCards";
+  let markup = "";
+
+  recipes.forEach((element) => {
+    tagsToMake = element.tags;
+    const tags = document.createElement("div");
+    tags.className = "recipeTags";
+
+    neededTags = tagsToMake.slice(0, 2);
+    neededTags.forEach((element) => {
+      tags.innerHTML += `
+                <div class="recipeTag">${element}</div>
+            `;
+    });
+
+    markup +=
+      `
+        <a class="recipeCard" href="recipePage.html?id=${element.id}">
+                    <div class="recipeImgContainer">
+                        <img class="recipeImg" src="${element.image}" alt="Recipe ${element.id}" />
+                    </div>
+                    
+
+                    <section class="recipeInnerContainer">
+                        <div class="recipeHeader">
+                            <h3>${element.name}</h3>
+                            <span class="fa fa-star checked"></span>
+                            <p>${element.rating}</p>
+                        </div>
+
+                        <p>
+                            The fish filet is very good and tastes very good and is very good to make because it tastes very good and Lorem Ipsum type shi osv osv. og så videre deromkring ja.
+                        </p>
+
+                        <div class="recipeTags">` +
+      tags.innerHTML +
+      `
+                        </div>
+                    </section>
+                </a>
+            `;
+  });
+
+  cardsContainer.innerHTML = markup;
+  return cardsContainer;
 }
 //hvordan funktionen kaldes:
-voresFunktion("JavaScript");
+buildCards(recipes);
 ```
